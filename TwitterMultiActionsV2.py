@@ -77,7 +77,9 @@ user_action = int(input('1. Массовые подписки\n'
                         '13. Изменить местоположение на каждом аккаунте\n'
                         '14. Получить @username с каждого аккаунта в .txt\n'
                         '15. Автоматическая смена паролей на аккаунтах\n'
-                        'Введите номер вашего действия: '))
+                        '16. Лайк, ретвит, коммент\n'
+                        'Введите номер вашего действия: '
+                        ))
 print('')
 
 threads = int(input('Threads: '))
@@ -209,6 +211,37 @@ elif user_action == 15:
 
     with open(folder_to_old_passwords, 'r') as file:
         old_passwords_list = [row.strip() for row in file]
+        
+        
+elif user_action == 16:
+    tweet_url = str(input('Введите ссылку на твит: '))
+    tweet_id = tweet_url.split('status/')[-1]\
+                        .split('/')[0].split('?')[0]\
+                        .split('&')[0].replace(' ', '')
+
+    tag_users = str(input('Отмечать друзей? (y/N): ')).lower()
+
+    if tag_users == 'y':
+        how_much_users_tag = int(input('Сколько друзей необходимо отметить?: '))
+        tag_users_source = int(input('Выберите способ получения @username для тега '
+                                     '(1 - случайная генерация; 2 - из .txt файла): '))
+
+        if tag_users_source == 2:
+            tag_users_folder = input('Перетяните .txt с @username\'s для тега: ')
+
+    need_phrase_for_comment = str(input('Добавить вашу фразу к комментарию? (y/N): ')).lower()
+
+    if need_phrase_for_comment == 'y':
+        phrase_for_comment = str(input('Введите фразу: '))
+
+    need_send_wallet = str(input('Отправлять кошельки из .txt в комментарии? (y/N): ')).lower()
+
+    if need_send_wallet == 'y':
+        wallets_txt_folder = str(input('Перетяните .txt файл с кошельками: '))
+
+        with open(wallets_txt_folder, 'r', encoding='utf-8') as file:
+            wallets_addresses = [row.strip() for row in file]
+        
 
 user_sleep_option = str(input('Использовать задержку между выполнением действий? (y/N): ')).lower()
 
@@ -1491,6 +1524,11 @@ def start(current_cookies_str, proxy_str, wallet_address, changed_username):
 
             elif user_action == 15:
                 app.change_passwords(old_passwords_list)
+            
+            elif user_action == 16:
+                app.mass_retweets()
+                app.mass_likes()
+                app.mass_comments(wallet_address)
 
     if user_sleep_option == 'y':
         sleep(user_time_to_sleep)
