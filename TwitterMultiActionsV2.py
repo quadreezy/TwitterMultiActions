@@ -973,8 +973,8 @@ class App():
                                                 "responsive_web_enhance_cards_enabled": False,
                                                 "responsive_web_uc_gql_enabled": False,
                                                 "standardized_nudges_misinfo": False,
-                                                "nudges_enabled": False,
-                                                "vibe_tweet_context_enabled": False
+                                                "tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled": False,
+                                                "vibe_api_enabled": False
                                             },
                                             "queryId": self.queryIdforComment
                                             },
